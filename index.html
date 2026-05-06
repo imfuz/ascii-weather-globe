@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ASCII Weather Globe</title>
+  <meta name="description" content="A rotating ASCII globe that shows live weather for any city. No API key, no backend." />
+  <meta property="og:title" content="ASCII Weather Globe" />
+  <meta property="og:description" content="Type a city. Watch a rotating ASCII Earth pin its location and report the live weather." />
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --fg: #e6f1ff;
+      --dim: #6b7a8f;
+      --accent: #ffd166;
+      --accent2: #6ee7ff;
+      --border: #1c2230;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      min-height: 100vh;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+    h1 .star { color: var(--accent); }
+    .tag {
+      color: var(--dim);
+      font-size: 13px;
+    }
+    form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    input[type=text] {
+      flex: 1 1 240px;
+      background: #11151b;
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font: inherit;
+      outline: none;
+    }
+    input[type=text]:focus {
+      border-color: var(--accent2);
+    }
+    button {
+      background: var(--accent);
+      color: #1a1300;
+      border: 0;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:disabled { opacity: 0.5; cursor: progress; }
+    .panels {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 720px) {
+      .panels { grid-template-columns: 1fr; }
+    }
+    pre {
+      margin: 0;
+      padding: 14px;
+      background: #0e1218;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: auto;
+      line-height: 1;
+      font-size: 14px;
+    }
+    #globe { color: var(--accent2); }
+    #globe .pin { color: var(--accent); }
+    #weather { color: var(--fg); font-size: 13px; line-height: 1.4; }
+    .status {
+      color: var(--dim);
+      font-size: 13px;
+      margin: 8px 2px 0;
+      min-height: 1.2em;
+    }
+    .status.err { color: #ff8a8a; }
+    footer {
+      margin-top: 28px;
+      color: var(--dim);
+      font-size: 12px;
+      text-align: center;
+    }
+    footer a { color: var(--accent2); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1><span class="star">★</span> ASCII Weather Globe</h1>
+      <span class="tag">type a city · watch the world spin</span>
+    </header>
+
+    <form id="search">
+      <input id="city" type="text" placeholder="e.g. Tokyo, Reykjavik, São Paulo" autocomplete="off" />
+      <button type="submit">Locate</button>
+    </form>
+    <div id="status" class="status"></div>
+
+    <section class="panels">
+      <pre id="globe" aria-label="Rotating ASCII globe"></pre>
+      <pre id="weather" aria-label="Weather card"></pre>
+    </section>
+
+    <footer>
+      Weather &amp; geocoding via <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> ·
+      <a href="https://github.com/imfuz/ascii-weather-globe" target="_blank" rel="noopener">source</a>
+    </footer>
+  </main>
+
+  <script src="globe.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
